@@ -157,10 +157,25 @@ export default function Home() {
       </div>
 
       {/* Header GT+ */}
-      <div className="fixed top-0 left-0 w-full flex items-center px-6 pt-4 pb-3">
+      <div className="fixed top-0 left-0 w-full flex items-center justify-between px-6 pt-4 pb-3">
         <span className="text-white font-black text-xl tracking-tight">
           GT<span style={{ color: GT_GREEN }}>+</span>
         </span>
+        {current > 0 && (
+          <button
+            onClick={() => {
+              setFieldError("");
+              setAnimating(true);
+              setTimeout(() => { setCurrent((c) => c - 1); setAnimating(false); }, 300);
+            }}
+            className="text-sm font-semibold flex items-center gap-1 transition-colors"
+            style={{ color: "rgba(255,255,255,0.5)" }}
+            onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
+            onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}
+          >
+            ← Voltar
+          </button>
+        )}
       </div>
 
       <div
