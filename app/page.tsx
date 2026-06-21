@@ -26,12 +26,28 @@ interface FormData {
 
 const steps = [
   { key: "nome", label: "Qual seu nome e sobrenome?", type: "text", placeholder: "Escreva seu nome" },
-  { key: "email", label: "Seu e-mail corporativo?", type: "email", placeholder: "Escreva seu e-mail" },
-  { key: "telefone", label: "Seu telefone?", type: "tel", placeholder: "Escreva o seu telefone" },
+  { key: "email", label: "Seu e-mail corporativo?", type: "email", placeholder: "exemplo@empresa.com.br" },
+  { key: "telefone", label: "Seu telefone?", type: "tel", placeholder: "(00) 00000-0000" },
   { key: "empresa", label: "Qual o nome da sua empresa?", type: "text", placeholder: "Escreva o nome da sua empresa" },
   { key: "faturamento", label: "Qual é o faturamento da sua empresa?", type: "select", options: faturamentoOptions },
   { key: "segmento", label: "Qual seu segmento?", type: "select", options: segmentoOptions },
 ];
+
+function isValidEmail(v: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+}
+
+function formatPhone(raw: string) {
+  const digits = raw.replace(/\D/g, "").slice(0, 11);
+  if (digits.length <= 2) return digits.length ? `(${digits}` : "";
+  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+}
+
+function isValidPhone(v: string) {
+  return v.replace(/\D/g, "").length >= 10;
+}
 
 const STORAGE_KEY = "gtmais_lead_progress";
 
@@ -61,15 +77,32 @@ export default function Home() {
   const value = formData[step.key as keyof FormData];
   const progress = (current / steps.length) * 100;
 
+  const [fieldError, setFieldError] = useState("");
+
   function handleChange(val: string) {
-    const updated = { ...formData, [step.key]: val };
+    const formatted = step.key === "telefone" ? formatPhone(val) : val;
+    const updated = { ...formData, [step.key]: formatted };
     setFormData(updated);
-    // Salva progresso a cada alteração
+    setFieldError("");
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ data: updated, step: current })); } catch {}
   }
 
+  function validate() {
+    if (!value.trim()) return false;
+    if (step.key === "email" && !isValidEmail(value)) {
+      setFieldError("Digite um e-mail válido, ex: nome@empresa.com.br");
+      return false;
+    }
+    if (step.key === "telefone" && !isValidPhone(value)) {
+      setFieldError("Digite um telefone válido com DDD, ex: (51) 99999-9999");
+      return false;
+    }
+    return true;
+  }
+
   function goNext() {
-    if (!value.trim()) return;
+    if (!validate()) return;
+    setFieldError("");
     const nextStep = current + 1;
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ data: formData, step: nextStep })); } catch {}
     setAnimating(true);
@@ -181,7 +214,8 @@ export default function Home() {
           <div>
             <input
               autoFocus
-              type={step.type}
+              type={step.key === "telefone" ? "tel" : step.type}
+              inputMode={step.key === "telefone" ? "numeric" : undefined}
               value={value}
               onChange={(e) => handleChange(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -189,10 +223,13 @@ export default function Home() {
               className="w-full px-6 py-4 rounded-2xl text-white text-lg font-medium outline-none border-2 transition-all duration-200"
               style={{
                 background: "rgba(255,255,255,0.05)",
-                borderColor: value ? GT_GREEN : "rgba(255,255,255,0.12)",
+                borderColor: fieldError ? "#f87171" : value ? GT_GREEN : "rgba(255,255,255,0.12)",
                 caretColor: GT_GREEN,
               }}
             />
+            {fieldError && (
+              <p className="mt-2 text-red-400 text-sm font-medium">{fieldError}</p>
+            )}
             <button
               onClick={goNext}
               disabled={!value.trim()}
