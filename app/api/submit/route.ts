@@ -3,7 +3,9 @@ import { Resend } from "resend";
 import fs from "fs";
 import path from "path";
 
-const DESTINATION_EMAIL = process.env.DESTINATION_EMAIL ?? "alexandre.souza.gtmais@gmail.com";
+const DESTINATION_EMAILS = (
+  process.env.DESTINATION_EMAIL ?? "alexandre.souza.gtmais@gmail.com"
+).split(",").map(e => e.trim());
 const LEADS_FILE = path.join(process.cwd(), "data", "leads.json");
 
 function saveLeadToFile(lead: Record<string, string>) {
@@ -61,7 +63,7 @@ export async function POST(req: NextRequest) {
     `;
     const { error } = await resend.emails.send({
       from: "Formulário GT+ <onboarding@resend.dev>",
-      to: DESTINATION_EMAIL,
+      to: DESTINATION_EMAILS,
       subject: `Novo lead: ${nome} — ${empresa}`,
       html,
     });
