@@ -53,15 +53,16 @@ const STORAGE_KEY = "gtmais_lead_progress";
 
 export default function Home() {
   const router = useRouter();
+  const [started, setStarted] = useState(false);
   const [current, setCurrent] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     nome: "", email: "", telefone: "", empresa: "", faturamento: "", segmento: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldError, setFieldError] = useState("");
   const [animating, setAnimating] = useState(false);
 
-  // Restaura progresso salvo ao carregar
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -69,15 +70,14 @@ export default function Home() {
         const { data, step } = JSON.parse(saved);
         setFormData(data);
         setCurrent(step);
+        setStarted(true);
       }
     } catch {}
   }, []);
 
   const step = steps[current];
   const value = formData[step.key as keyof FormData];
-  const progress = (current / steps.length) * 100;
-
-  const [fieldError, setFieldError] = useState("");
+  const progress = started ? ((current + 1) / steps.length) * 100 : 0;
 
   function handleChange(val: string) {
     const formatted = step.key === "telefone" ? formatPhone(val) : val;
@@ -136,7 +136,6 @@ export default function Home() {
         body: JSON.stringify(data),
       });
       if (!res.ok) throw new Error();
-      // Limpa progresso salvo após envio bem-sucedido
       try { localStorage.removeItem(STORAGE_KEY); } catch {}
       router.push("/obrigado");
     } catch {
@@ -144,6 +143,52 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
+  }
+
+  // Tela de introdução
+  if (!started) {
+    return (
+      <main className="min-h-screen flex flex-col items-center justify-center px-4 py-16" style={{ background: GT_DARK }}>
+        <div className="fixed top-0 left-0 w-full flex items-center px-6 pt-4 pb-3">
+          <span className="text-white font-black text-xl tracking-tight">
+            GT<span style={{ color: GT_GREEN }}>+</span>
+          </span>
+        </div>
+
+        <div className="w-full max-w-lg text-center">
+          <p className="text-xs font-black uppercase tracking-widest mb-6" style={{ color: GT_GREEN }}>
+            GT+ Assessoria de Marketing Digital
+          </p>
+
+          <h1 className="text-4xl font-black text-white leading-tight mb-6">
+            Vamos entender o seu negócio?
+          </h1>
+
+          <p className="text-gray-400 text-lg leading-relaxed mb-10">
+            Responda algumas perguntas rápidas para que um especialista GT+ possa entrar em contato com a solução ideal para a sua empresa.
+          </p>
+
+          <button
+            onClick={() => setStarted(true)}
+            className="w-full py-5 rounded-full text-lg font-black transition-all duration-200 mb-4"
+            style={{
+              background: GT_GREEN,
+              color: GT_DARK,
+              boxShadow: `0 4px 32px ${GT_GREEN}50`,
+            }}
+          >
+            Iniciar agora →
+          </button>
+
+          <p className="text-gray-500 text-sm flex items-center justify-center gap-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            Respondido em menos de 30 segundos
+          </p>
+        </div>
+      </main>
+    );
   }
 
   return (
@@ -161,21 +206,23 @@ export default function Home() {
         <span className="text-white font-black text-xl tracking-tight">
           GT<span style={{ color: GT_GREEN }}>+</span>
         </span>
-        {current > 0 && (
-          <button
-            onClick={() => {
-              setFieldError("");
+        <button
+          onClick={() => {
+            setFieldError("");
+            if (current === 0) {
+              setStarted(false);
+            } else {
               setAnimating(true);
               setTimeout(() => { setCurrent((c) => c - 1); setAnimating(false); }, 300);
-            }}
-            className="text-sm font-semibold flex items-center gap-1 transition-colors"
-            style={{ color: "rgba(255,255,255,0.5)" }}
-            onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
-            onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}
-          >
-            ← Voltar
-          </button>
-        )}
+            }
+          }}
+          className="text-sm font-semibold flex items-center gap-1 transition-colors"
+          style={{ color: "rgba(255,255,255,0.5)" }}
+          onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
+          onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}
+        >
+          ← Voltar
+        </button>
       </div>
 
       <div
@@ -186,15 +233,10 @@ export default function Home() {
           transition: "opacity 0.3s ease, transform 0.3s ease",
         }}
       >
-        {/* Label de etapa */}
-        <p
-          className="text-xs font-black uppercase tracking-widest mb-5"
-          style={{ color: GT_GREEN }}
-        >
+        <p className="text-xs font-black uppercase tracking-widest mb-5" style={{ color: GT_GREEN }}>
           Etapa {current + 1} de {steps.length}
         </p>
 
-        {/* Pergunta */}
         <h2 className="text-white text-3xl font-black leading-tight mb-8">
           {step.label}
         </h2>

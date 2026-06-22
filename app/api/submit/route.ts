@@ -33,6 +33,17 @@ export async function POST(req: NextRequest) {
   // Sempre salva em arquivo como backup
   saveLeadToFile(lead);
 
+  // Envia para webhook Make
+  try {
+    await fetch("https://hook.us1.make.com/py82g34sduhssyt6ny4voqwmu5qjd4m6", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...lead, createdAt: new Date().toISOString() }),
+    });
+  } catch (err) {
+    console.error("Erro ao enviar webhook:", err);
+  }
+
   // Envia por e-mail apenas se a chave Resend estiver configurada
   const apiKey = process.env.RESEND_API_KEY;
   if (apiKey && apiKey !== "re_COLOQUE_SUA_CHAVE_AQUI") {

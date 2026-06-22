@@ -50,11 +50,23 @@ export default function Obrigado() {
         </p>
 
         <Link
-          href="https://gtmais.com.br"
-          className="inline-block px-8 py-4 rounded-full font-black text-base transition-all duration-200"
-          style={{ background: GT_GREEN, color: GT_DARK }}
+          href="https://www.instagram.com/gtmaismkt/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-black text-base transition-all duration-200"
+          style={{
+            background: GT_GREEN,
+            color: GT_DARK,
+            boxShadow: `0 4px 32px ${GT_GREEN}50`,
+          }}
         >
-          Conheça a GT+ →
+          {/* Ícone Instagram */}
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke={GT_DARK} strokeWidth="2"/>
+            <circle cx="12" cy="12" r="4" stroke={GT_DARK} strokeWidth="2"/>
+            <circle cx="17.5" cy="6.5" r="1" fill={GT_DARK}/>
+          </svg>
+          Conheça a GT+
         </Link>
       </div>
     </main>
