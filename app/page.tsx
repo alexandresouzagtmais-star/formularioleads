@@ -180,7 +180,7 @@ export default function Home() {
         window.dataLayer = window.dataLayer || [];
         // @ts-expect-error dataLayer
         window.dataLayer.push({
-          event: "lead_submitted",
+          event: "lead_submited",
           lead_nome: data.nome,
           lead_email: data.email,
           lead_empresa: data.empresa,
