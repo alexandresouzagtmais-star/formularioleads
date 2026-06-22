@@ -24,13 +24,15 @@ function saveLeadToFile(lead: Record<string, string>) {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { nome, email, telefone, empresa, faturamento, segmento } = body;
+  const { nome, email, telefone, empresa, faturamento, segmento,
+    utm_source, utm_medium, utm_content, utm_term, utm_campaign, gclid, fbclid } = body;
 
   if (!nome || !email || !telefone || !empresa || !faturamento || !segmento) {
     return NextResponse.json({ error: "Campos obrigatórios faltando" }, { status: 400 });
   }
 
-  const lead = { nome, email, telefone, empresa, faturamento, segmento };
+  const lead = { nome, email, telefone, empresa, faturamento, segmento,
+    utm_source, utm_medium, utm_content, utm_term, utm_campaign, gclid, fbclid };
 
   // Sempre salva em arquivo como backup
   saveLeadToFile(lead);
@@ -60,6 +62,29 @@ export async function POST(req: NextRequest) {
         <tr><td style="padding:10px 14px;font-weight:bold;background:#f5f5f5">Faturamento</td><td style="padding:10px 14px">${faturamento}</td></tr>
         <tr><td style="padding:10px 14px;font-weight:bold;background:#f5f5f5">Segmento</td><td style="padding:10px 14px">${segmento}</td></tr>
       </table>
+      ${[
+        { label: "utm_source", value: utm_source },
+        { label: "utm_medium", value: utm_medium },
+        { label: "utm_content", value: utm_content },
+        { label: "utm_term", value: utm_term },
+        { label: "utm_campaign", value: utm_campaign },
+        { label: "gclid", value: gclid },
+        { label: "fbclid", value: fbclid },
+      ].some(u => u.value) ? `
+      <h3 style="color:#91D400;font-family:sans-serif;margin-top:24px">Origem do Lead</h3>
+      <table style="border-collapse:collapse;width:100%;max-width:500px;font-family:sans-serif">
+        ${[
+          { label: "utm_source", value: utm_source },
+          { label: "utm_medium", value: utm_medium },
+          { label: "utm_content", value: utm_content },
+          { label: "utm_term", value: utm_term },
+          { label: "utm_campaign", value: utm_campaign },
+          { label: "gclid", value: gclid },
+          { label: "fbclid", value: fbclid },
+        ].filter(u => u.value).map(u =>
+          `<tr><td style="padding:10px 14px;font-weight:bold;background:#f5f5f5;width:140px">${u.label}</td><td style="padding:10px 14px">${u.value}</td></tr>`
+        ).join("")}
+      </table>` : ""}
     `;
     const { error } = await resend.emails.send({
       from: "Formulário GT+ <onboarding@resend.dev>",

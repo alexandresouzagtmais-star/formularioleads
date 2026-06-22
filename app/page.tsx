@@ -15,6 +15,18 @@ const faturamentoOptions = [
 
 const segmentoOptions = ["Franqueadora", "Franqueada", "Serviços", "Outros"];
 
+const UTM_PARAMS = ["utm_source", "utm_medium", "utm_content", "utm_term", "utm_campaign", "gclid", "fbclid"];
+
+interface UTMData {
+  utm_source: string;
+  utm_medium: string;
+  utm_content: string;
+  utm_term: string;
+  utm_campaign: string;
+  gclid: string;
+  fbclid: string;
+}
+
 interface FormData {
   nome: string;
   email: string;
@@ -50,6 +62,7 @@ function isValidPhone(v: string) {
 }
 
 const STORAGE_KEY = "gtmais_lead_progress";
+const UTM_STORAGE_KEY = "gtmais_utms";
 
 export default function Home() {
   const router = useRouter();
@@ -58,12 +71,36 @@ export default function Home() {
   const [formData, setFormData] = useState<FormData>({
     nome: "", email: "", telefone: "", empresa: "", faturamento: "", segmento: "",
   });
+  const [utmData, setUtmData] = useState<UTMData>({
+    utm_source: "", utm_medium: "", utm_content: "", utm_term: "", utm_campaign: "", gclid: "", fbclid: "",
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [fieldError, setFieldError] = useState("");
   const [animating, setAnimating] = useState(false);
 
   useEffect(() => {
+    // Captura UTMs da URL e salva no localStorage para não perder se redirecionar
+    const params = new URLSearchParams(window.location.search);
+    const captured: Partial<UTMData> = {};
+    UTM_PARAMS.forEach(key => {
+      const val = params.get(key);
+      if (val) captured[key as keyof UTMData] = val;
+    });
+
+    if (Object.keys(captured).length > 0) {
+      const merged = { utm_source: "", utm_medium: "", utm_content: "", utm_term: "", utm_campaign: "", gclid: "", fbclid: "", ...captured };
+      setUtmData(merged);
+      try { localStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(merged)); } catch {}
+    } else {
+      // Tenta recuperar UTMs salvas anteriormente
+      try {
+        const saved = localStorage.getItem(UTM_STORAGE_KEY);
+        if (saved) setUtmData(JSON.parse(saved));
+      } catch {}
+    }
+
+    // Restaura progresso do formulário
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
@@ -133,7 +170,7 @@ export default function Home() {
       const res = await fetch("/api/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, ...utmData }),
       });
       if (!res.ok) throw new Error();
       try { localStorage.removeItem(STORAGE_KEY); } catch {}
