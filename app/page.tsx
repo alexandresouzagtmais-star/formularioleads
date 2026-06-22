@@ -174,6 +174,23 @@ export default function Home() {
       });
       if (!res.ok) throw new Error();
       try { localStorage.removeItem(STORAGE_KEY); } catch {}
+      // Dispara evento GTM
+      if (typeof window !== "undefined") {
+        // @ts-expect-error dataLayer
+        window.dataLayer = window.dataLayer || [];
+        // @ts-expect-error dataLayer
+        window.dataLayer.push({
+          event: "lead_submitted",
+          lead_nome: data.nome,
+          lead_email: data.email,
+          lead_empresa: data.empresa,
+          lead_faturamento: data.faturamento,
+          lead_segmento: data.segmento,
+          utm_source: utmData.utm_source || undefined,
+          utm_medium: utmData.utm_medium || undefined,
+          utm_campaign: utmData.utm_campaign || undefined,
+        });
+      }
       router.push("/obrigado");
     } catch {
       setError("Ocorreu um erro ao enviar. Tente novamente.");
