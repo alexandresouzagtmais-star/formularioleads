@@ -17,3 +17,16 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+.bg-responsive {
+  background-image: url('/bg-desk.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 768px) {
+  .bg-responsive {
+    background-image: url('/bg-mobile.png');
+  }
+}

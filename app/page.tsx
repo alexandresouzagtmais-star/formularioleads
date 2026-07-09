@@ -218,12 +218,7 @@ export default function Home() {
   const showBack = screenIndex > 0;
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-20" style={{
-      backgroundImage: "url('/bg.jpg')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-    }}>
+    <main className="bg-responsive min-h-screen flex flex-col items-center justify-center px-4 py-20">
       {/* Barra de progresso */}
       <div className="fixed top-0 left-0 w-full h-1 bg-white/10">
         <div className="h-full transition-all duration-500 ease-out" style={{ width: `${progress}%`, background: GT_GREEN }} />
