@@ -348,10 +348,10 @@ export default function Home() {
             <h2 className="text-white text-3xl font-black leading-tight mb-8">
               Veja o resultado dos nossos clientes
             </h2>
-            <div className="grid grid-cols-2 gap-3 mb-6">
+            <div className="grid grid-cols-2 gap-4 mb-8">
               {CLIENTE_CARDS.map((card, i) => (
-                <div key={i} className="rounded-xl overflow-hidden flex items-center justify-center"
-                  style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.1)", height: "130px" }}>
+                <div key={i} className="rounded-2xl overflow-hidden aspect-square flex items-center justify-center"
+                  style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.1)" }}>
                   <img src={card.src} alt={card.alt} className="w-full h-full object-cover"
                     onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
                 </div>
