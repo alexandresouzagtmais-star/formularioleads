@@ -112,7 +112,7 @@ export default function Home() {
   const screen = SCREENS[screenIndex];
   const value = screen.id in formData ? formData[screen.id as keyof FormData] : "";
   const formStep = FORM_SCREENS.indexOf(screen.id);
-  const progress = formStep >= 0 ? ((formStep + 1) / TOTAL_STEPS) * 100 : screenIndex === 0 ? 0 : 100;
+  const progress = formStep >= 0 ? (formStep / TOTAL_STEPS) * 100 : 0;
 
   function goTo(idx: number, updatedData?: FormData) {
     const data = updatedData ?? formData;
@@ -252,14 +252,27 @@ export default function Home() {
         {/* ── TELA 0: INTRO ── */}
         {screen.type === "intro" && (
           <div className="text-center">
-            <p className="text-xs font-black uppercase tracking-widest mb-6" style={{ color: GT_GREEN }}>
+            <p className="text-xs font-black uppercase tracking-widest mb-4" style={{ color: GT_GREEN }}>
               GT+ Assessoria de Marketing Digital
             </p>
-            <h1 className="text-4xl font-black text-white leading-tight mb-4">
+            <h1 className="text-4xl font-black text-white leading-tight mb-3">
               Multiplique o faturamento da sua empresa em até 3x
             </h1>
-            <p className="text-gray-400 text-lg leading-relaxed mb-10">
-              Com a estratégia certa de marketing digital, o crescimento que você busca está mais próximo do que imagina. Responda algumas perguntas rápidas para realizarmos um diagnóstico do seu negócio.
+            <p className="text-gray-400 text-base leading-relaxed mb-6">
+              A estratégia certa transforma seu negócio. Descubra como.
+            </p>
+            {/* Imagem de destaque */}
+            <div className="rounded-2xl overflow-hidden mb-6 w-full"
+              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", minHeight: "180px" }}>
+              <img
+                src="/intro-image.jpg"
+                alt="GT+ Resultados"
+                className="w-full object-cover"
+                onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
+              />
+            </div>
+            <p className="text-gray-400 text-sm leading-relaxed mb-8">
+              Responda algumas perguntas rápidas para realizarmos um diagnóstico do seu negócio.
             </p>
             <button
               onClick={() => goNext()}
@@ -328,7 +341,7 @@ export default function Home() {
         {screen.type === "social" && (
           <div className="text-center">
             <p className="text-xs font-black uppercase tracking-widest mb-5" style={{ color: GT_GREEN }}>
-              É um prazer, {formData.nome.split(" ")[0]}... veja o que falam sobre a GT+
+              É um prazer, {formData.nome.split(" ")[0]}! Veja o que falam sobre a GT+
             </p>
             <h2 className="text-white text-3xl font-black leading-tight mb-8">
               Veja o resultado dos nossos clientes
