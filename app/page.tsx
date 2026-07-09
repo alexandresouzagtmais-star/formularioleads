@@ -34,7 +34,7 @@ const SCREENS = [
   { id: "segmento",  type: "select",  label: "Qual o segmento da sua empresa?",
     options: ["Franqueadora", "Franqueado", "Serviço", "Outro"] },
   { id: "telefone",  type: "text",    label: "Digite o seu melhor número",           placeholder: "(00) 00000-0000" },
-  { id: "email",     type: "text",    label: "Digite o seu melhor e-mail",           placeholder: "exemplo@empresa.com.br" },
+  { id: "email",     type: "text",    label: "Digite o seu melhor e‑mail",           placeholder: "exemplo@empresa.com.br" },
   { id: "empresa",   type: "text",    label: "Para finalizarmos, qual o nome da sua empresa?", placeholder: "Nome da empresa" },
 ];
 
