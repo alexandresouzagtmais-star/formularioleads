@@ -113,15 +113,8 @@ export default function Home() {
   const screen = SCREENS[screenIndex];
   const value = screen.id in formData ? formData[screen.id as keyof FormData] : "";
   const formStep = FORM_SCREENS.indexOf(screen.id);
-  const rawProgress = screenIndex === 0 ? 0 : formStep >= 0
-    ? Math.round(((formStep + 1) / TOTAL_STEPS) * 100)
-    : Math.round(((FORM_SCREENS.indexOf("nome") + 1) / TOTAL_STEPS) * 100);
-  const progress = Math.max(rawProgress, maxProgress);
-
-  // Atualiza o máximo sempre que avança
-  useEffect(() => {
-    if (rawProgress > maxProgress) setMaxProgress(rawProgress);
-  }, [screenIndex]); // eslint-disable-line
+  const TOTAL_SCREENS = SCREENS.length - 1; // exclui intro
+  const progress = screenIndex === 0 ? 0 : Math.round((screenIndex / TOTAL_SCREENS) * 100);
 
   function goTo(idx: number, updatedData?: FormData) {
     const data = updatedData ?? formData;
