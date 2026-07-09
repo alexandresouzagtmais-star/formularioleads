@@ -112,7 +112,10 @@ export default function Home() {
   const screen = SCREENS[screenIndex];
   const value = screen.id in formData ? formData[screen.id as keyof FormData] : "";
   const formStep = FORM_SCREENS.indexOf(screen.id);
-  const progress = formStep >= 0 ? (formStep / TOTAL_STEPS) * 100 : 0;
+  // Intro = 0%, tela social proof conta como o passo anterior, campos do formulário crescem progressivamente
+  const progress = screenIndex === 0 ? 0 : formStep >= 0
+    ? Math.round(((formStep + 1) / TOTAL_STEPS) * 100)
+    : Math.round((FORM_SCREENS.indexOf("nome") / TOTAL_STEPS) * 100);
 
   function goTo(idx: number, updatedData?: FormData) {
     const data = updatedData ?? formData;
