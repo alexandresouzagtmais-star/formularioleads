@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 const GT_GREEN = "#91D400";
 const GT_DARK = "#111111";
@@ -336,10 +335,10 @@ export default function Home() {
             </h2>
             <div className="grid grid-cols-2 gap-4 mb-8">
               {CLIENTE_CARDS.map((card, i) => (
-                <div key={i} className="rounded-2xl overflow-hidden aspect-square relative"
+                <div key={i} className="rounded-2xl overflow-hidden aspect-square relative flex items-center justify-center"
                   style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <Image src={card.src} alt={card.alt} fill className="object-cover"
-                    onError={() => {}} />
+                  <img src={card.src} alt={card.alt} className="w-full h-full object-cover"
+                    onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
                 </div>
               ))}
             </div>
