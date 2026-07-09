@@ -226,9 +226,7 @@ export default function Home() {
 
       {/* Header */}
       <div className="fixed top-0 left-0 w-full flex items-center justify-between px-6 pt-4 pb-3">
-        <span className="text-white font-black text-xl tracking-tight">
-          GT<span style={{ color: GT_GREEN }}>+</span>
-        </span>
+        <img src="/logo.svg" alt="GT+" style={{ height: "32px", width: "auto" }} />
         {showBack && (
           <button
             onClick={goBack}
