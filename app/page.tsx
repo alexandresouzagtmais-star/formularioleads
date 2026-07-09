@@ -226,7 +226,10 @@ export default function Home() {
 
       {/* Header */}
       <div className="fixed top-0 left-0 w-full flex items-center justify-between px-6 pt-4 pb-3">
-        <img src="/logo.svg" alt="GT+" style={{ height: "32px", width: "auto" }} />
+        <svg height="32" viewBox="0 0 147 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M135.373 45.2042V31.916H123.983V45.2042H110.576V56.4753H129.322L124.102 62.8821V69.8821H135.373V56.4753H146.763V45.2042H135.373Z" fill="white"/>
+          <path d="M115.085 17.7966L129.441 0.474576L129.797 0H33.2203C22.1469 0.909604 0 9.25424 0 35.3559C0 61.4576 22.1469 69.3277 33.2203 70H67.0339V27.4068H38.678L29.1864 42.1186H49.1186V51.8475H35.1186C22.2102 51.8475 18.8249 40.8531 18.7458 35.3559C18.7458 21.5932 29.661 17.9153 35.1186 17.7966H79.1356V70H98V17.7966H115.085Z" fill="white"/>
+        </svg>
         {showBack && (
           <button
             onClick={goBack}
