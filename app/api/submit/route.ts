@@ -24,14 +24,14 @@ function saveLeadToFile(lead: Record<string, string>) {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { nome, email, telefone, empresa, faturamento, segmento,
+  const { nome, email, telefone, empresa, faturamento, segmento, trafego,
     utm_source, utm_medium, utm_content, utm_term, utm_campaign, gclid, fbclid } = body;
 
   if (!nome || !email || !telefone || !empresa || !faturamento || !segmento) {
     return NextResponse.json({ error: "Campos obrigatórios faltando" }, { status: 400 });
   }
 
-  const lead = { nome, email, telefone, empresa, faturamento, segmento,
+  const lead = { nome, email, telefone, empresa, faturamento, segmento, trafego,
     utm_source, utm_medium, utm_content, utm_term, utm_campaign, gclid, fbclid };
 
   // Sempre salva em arquivo como backup
@@ -56,6 +56,7 @@ export async function POST(req: NextRequest) {
       <h2 style="color:#91D400;font-family:sans-serif">Novo Lead — GT+</h2>
       <table style="border-collapse:collapse;width:100%;max-width:500px;font-family:sans-serif">
         <tr><td style="padding:10px 14px;font-weight:bold;background:#f5f5f5;width:140px">Nome</td><td style="padding:10px 14px">${nome}</td></tr>
+        <tr><td style="padding:10px 14px;font-weight:bold;background:#f5f5f5">Tráfego pago</td><td style="padding:10px 14px">${trafego || "—"}</td></tr>
         <tr><td style="padding:10px 14px;font-weight:bold;background:#f5f5f5">E-mail</td><td style="padding:10px 14px">${email}</td></tr>
         <tr><td style="padding:10px 14px;font-weight:bold;background:#f5f5f5">Telefone</td><td style="padding:10px 14px">${telefone}</td></tr>
         <tr><td style="padding:10px 14px;font-weight:bold;background:#f5f5f5">Empresa</td><td style="padding:10px 14px">${empresa}</td></tr>
