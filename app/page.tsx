@@ -43,10 +43,10 @@ const FORM_SCREENS = ["trafego", "nome", "faturamento", "segmento", "telefone", 
 const TOTAL_STEPS = FORM_SCREENS.length;
 
 const CLIENTE_CARDS = [
-  { src: "/clientes/cliente1.jpg", alt: "Cliente 1" },
-  { src: "/clientes/cliente2.jpg", alt: "Cliente 2" },
-  { src: "/clientes/cliente3.jpg", alt: "Cliente 3" },
-  { src: "/clientes/cliente4.jpg", alt: "Cliente 4" },
+  { src: "/clientes/cliente%201.png", alt: "Cliente 1" },
+  { src: "/clientes/cliente%202.png", alt: "Cliente 2" },
+  { src: "/clientes/cliente%203.png", alt: "Cliente 3" },
+  { src: "/clientes/cliente%204.png", alt: "Cliente 4" },
 ];
 
 function isValidEmail(v: string) {
@@ -268,7 +268,7 @@ export default function Home() {
             <div className="rounded-2xl overflow-hidden mb-6 w-full"
               style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", minHeight: "180px" }}>
               <img
-                src="/intro-image.jpg"
+                src="/clientes/capa%20inicio.png"
                 alt="GT+ Resultados"
                 className="w-full object-cover"
                 onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
