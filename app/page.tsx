@@ -81,6 +81,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const [fieldError, setFieldError] = useState("");
   const [animating, setAnimating] = useState(false);
+  const [maxProgress, setMaxProgress] = useState(0);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -112,10 +113,15 @@ export default function Home() {
   const screen = SCREENS[screenIndex];
   const value = screen.id in formData ? formData[screen.id as keyof FormData] : "";
   const formStep = FORM_SCREENS.indexOf(screen.id);
-  // Intro = 0%, tela social proof conta como o passo anterior, campos do formulário crescem progressivamente
-  const progress = screenIndex === 0 ? 0 : formStep >= 0
+  const rawProgress = screenIndex === 0 ? 0 : formStep >= 0
     ? Math.round(((formStep + 1) / TOTAL_STEPS) * 100)
-    : Math.round((FORM_SCREENS.indexOf("nome") / TOTAL_STEPS) * 100);
+    : Math.round(((FORM_SCREENS.indexOf("nome") + 1) / TOTAL_STEPS) * 100);
+  const progress = Math.max(rawProgress, maxProgress);
+
+  // Atualiza o máximo sempre que avança
+  useEffect(() => {
+    if (rawProgress > maxProgress) setMaxProgress(rawProgress);
+  }, [screenIndex]); // eslint-disable-line
 
   function goTo(idx: number, updatedData?: FormData) {
     const data = updatedData ?? formData;
@@ -349,10 +355,10 @@ export default function Home() {
             <h2 className="text-white text-3xl font-black leading-tight mb-8">
               Veja o resultado dos nossos clientes
             </h2>
-            <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="grid grid-cols-2 gap-3 mb-6">
               {CLIENTE_CARDS.map((card, i) => (
-                <div key={i} className="rounded-2xl overflow-hidden aspect-square relative flex items-center justify-center"
-                  style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                <div key={i} className="rounded-xl overflow-hidden flex items-center justify-center"
+                  style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.1)", height: "130px" }}>
                   <img src={card.src} alt={card.alt} className="w-full h-full object-cover"
                     onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
                 </div>
