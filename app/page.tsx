@@ -81,8 +81,6 @@ export default function Home() {
   const [error, setError] = useState("");
   const [fieldError, setFieldError] = useState("");
   const [animating, setAnimating] = useState(false);
-  const [maxProgress, setMaxProgress] = useState(0);
-
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const captured: Partial<UTMData> = {};
