@@ -102,8 +102,12 @@ export default function Home() {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const { data, idx } = JSON.parse(saved);
-        setFormData(data);
-        setScreenIndex(idx);
+        if (data && typeof data === "object") {
+          setFormData(prev => ({ ...prev, ...data }));
+        }
+        if (typeof idx === "number" && idx >= 0 && idx < SCREENS.length) {
+          setScreenIndex(idx);
+        }
       }
     } catch {}
   }, []);
