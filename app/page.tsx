@@ -264,7 +264,7 @@ export default function Home() {
               Multiplique o faturamento da sua empresa em até 3x
             </h1>
             <p className="text-gray-400 text-base leading-relaxed mb-6">
-              A estratégia certa transforma seu negócio. Descubra como.
+              Através de um método validado para aumentar demanda, conversão e faturamento.
             </p>
             {/* Imagem de destaque */}
             <div className="rounded-2xl overflow-hidden mb-6 w-full"
