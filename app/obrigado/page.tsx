@@ -50,7 +50,7 @@ export default function Obrigado() {
         </p>
 
         <Link
-          href="https://www.instagram.com/gtmaismkt/"
+          href="https://www.instagram.com/gtmaisoficial/"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-black text-base transition-all duration-200"
