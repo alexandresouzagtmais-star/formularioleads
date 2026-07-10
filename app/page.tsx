@@ -298,9 +298,6 @@ export default function Home() {
         {/* ── TELA 1: TRÁFEGO (BINARY) ── */}
         {screen.type === "binary" && (
           <div>
-            <p className="text-xs font-black uppercase tracking-widest mb-5" style={{ color: GT_GREEN }}>
-              Etapa 1 de {TOTAL_STEPS}
-            </p>
             <h2 className="text-white text-3xl font-black leading-tight mb-8">{screen.label}</h2>
             <div className="grid grid-cols-2 gap-4">
               <button
@@ -332,9 +329,6 @@ export default function Home() {
         {/* ── TELA 2: NOME ── */}
         {screen.type === "text" && screen.id === "nome" && (
           <div>
-            <p className="text-xs font-black uppercase tracking-widest mb-5" style={{ color: GT_GREEN }}>
-              Etapa 2 de {TOTAL_STEPS}
-            </p>
             <h2 className="text-white text-3xl font-black leading-tight mb-8">{screen.label}</h2>
             <TextInput value={value} onChange={handleTextChange} onKeyDown={handleKeyDown}
               placeholder={screen.placeholder!} fieldError={fieldError} id={screen.id} />
@@ -373,9 +367,6 @@ export default function Home() {
         {/* ── TELAS SELECT ── */}
         {screen.type === "select" && (
           <div>
-            <p className="text-xs font-black uppercase tracking-widest mb-5" style={{ color: GT_GREEN }}>
-              Etapa {formStep + 1} de {TOTAL_STEPS}
-            </p>
             <h2 className="text-white text-3xl font-black leading-tight mb-8">{screen.label}</h2>
             <div className="flex flex-col gap-3">
               {screen.options!.map((opt) => {
@@ -402,9 +393,6 @@ export default function Home() {
         {/* ── TELAS TEXT (telefone, email, empresa) ── */}
         {screen.type === "text" && screen.id !== "nome" && (
           <div>
-            <p className="text-xs font-black uppercase tracking-widest mb-5" style={{ color: GT_GREEN }}>
-              Etapa {formStep + 1} de {TOTAL_STEPS}
-            </p>
             <h2 className="text-white text-3xl font-black leading-tight mb-8">{screen.label}</h2>
             <TextInput value={value} onChange={handleTextChange} onKeyDown={handleKeyDown}
               placeholder={screen.placeholder!} fieldError={fieldError} id={screen.id} />
